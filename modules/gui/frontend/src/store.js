@@ -52,7 +52,6 @@ export const connect = mapStateToProps => {
 
     return WrappedComponent => {
         const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component'
-        const id = `${displayName}:${guid()}`
 
         class PreventUpdateWhenDisabled extends Component {
             shouldComponentUpdate(nextProps) {
@@ -91,6 +90,8 @@ export const connect = mapStateToProps => {
         class ConnectedComponent extends React.PureComponent {
             constructor(props) {
                 super(props)
+                const id = `${displayName}:${guid()}`
+                console.log(id)
                 this.id = id
                 this.componentWillUnmount$ = new Subject()
                 this.asyncActionBuilder = this.asyncActionBuilder.bind(this)

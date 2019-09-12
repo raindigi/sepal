@@ -1,14 +1,14 @@
-import {runApp$} from 'apps'
-import {compose} from 'compose'
-import PropTypes from 'prop-types'
-import React from 'react'
-import {forkJoin, timer} from 'rxjs'
-import {connect} from 'store'
-import {msg} from 'translate'
 import {Autofit} from 'widget/autofit'
+import {ContentPadding} from 'widget/sectionLayout'
+import {compose} from 'compose'
+import {connect} from 'store'
+import {forkJoin, timer} from 'rxjs'
+import {msg} from 'translate'
+import {runApp$} from 'apps'
 import Icon from 'widget/icon'
 import Notifications from 'widget/notifications'
-import {ContentPadding} from 'widget/sectionLayout'
+import PropTypes from 'prop-types'
+import React from 'react'
 import styles from './appInstance.module.css'
 
 class AppInstance extends React.Component {
@@ -21,10 +21,15 @@ class AppInstance extends React.Component {
         this.runApp(props.app)
     }
 
+    componentDidMount() {
+        console.log(this.props)
+    }
+
     runApp(app) {
-        this.props.stream('RUN_APP',
+        const {stream} = this.props
+        stream('RUN_APP',
             forkJoin([
-                runApp$(app.path),
+                // runApp$(app.path),
                 timer(500)
             ]),
             () => this.onInitialized(),
@@ -65,13 +70,16 @@ class AppInstance extends React.Component {
     renderIFrame() {
         const {app: {path, label, alt}} = this.props
         const {appState} = this.state
-        return this.props.stream('RUN_APP').completed
+        const completed = this.props.stream('RUN_APP').completed
+        console.log({completed, appState})
+        return completed || appState === 'READY'
             ? (
                 <iframe
                     width='100%'
                     height='100%'
                     frameBorder='0'
-                    src={'/api' + path}
+                    src={'https://www.google.com'}
+                    // src={'/api' + path}
                     title={label || alt}
                     style={{display: appState === 'READY' ? 'block' : 'none'}}
                     onLoad={() => this.setState({appState: 'READY'})}
