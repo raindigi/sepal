@@ -1,3 +1,4 @@
+import {MapLayout, MapLayoutButton} from '../body/process/mapLayout/mapLayout.js'
 import {Toolbar} from 'widget/toolbar/toolbar'
 import {compose} from 'compose'
 import {connect, select} from 'store'
@@ -5,7 +6,6 @@ import {msg} from 'translate'
 import {sepalMap} from './map'
 import Keybinding from 'widget/keybinding'
 import Labels from 'app/home/map/labels'
-// import {MapLayout, MapLayoutButton} from '../body/process/mapLayout/mapLayout.js'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styles from './mapToolbar.module.css'
@@ -20,12 +20,12 @@ const mapStateToProps = (state, ownProps) => ({
 
 class MapToolbar extends React.Component {
     render() {
-        // const {mapContext, isZooming, hasBounds, metersPerPixel} = this.props
+        // const {mapContext, isZooming, hasBounds, metersPerPixel, children} = this.props
         const {statePath, mapContext, isZooming, labelsShown, labelLayerIndex, hasBounds, metersPerPixel, children} = this.props
         const context = sepalMap.getContext(mapContext)
         return (
             <React.Fragment>
-                {/* <MapLayout/> */}
+                <MapLayout/>
                 <Toolbar
                     className={styles.mapToolbar}
                     horizontal
@@ -51,7 +51,7 @@ class MapToolbar extends React.Component {
                         onClick={() => sepalMap.getContext(mapContext).fitLayer('aoi')}
                         icon={'bullseye'}
                         tooltip={msg('process.mosaic.mapToolbar.centerMap.tooltip')}/>
-                    {/* <MapLayoutButton/> */}
+                    <MapLayoutButton/>
                     <Toolbar.ToolbarButton
                         selected={labelsShown}
                         onClick={() => Labels.showLabelsAction({
